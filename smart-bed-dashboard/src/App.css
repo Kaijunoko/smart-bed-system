@@ -1,0 +1,68 @@
+/* App 主容器樣式 */
+.App {
+  text-align: center;
+}
+
+/* Logo 尺寸與互動設定 */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* 若使用者偏好動畫，啟用旋轉動畫 */
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* Header 區塊樣式 */
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* 超連結樣式 */
+.App-link {
+  color: #61dafb;
+}
+
+/* 🔁 修正：只保留一個 .flash 定義，使用 flashEffect 動畫 */
+.flash {
+  animation: flashEffect 1s ease-in-out;
+}
+
+/* 🔁 修正：只保留一次 .blinking 定義 */
+.blinking {
+  animation: blink 1s infinite;
+}
+
+/* 🔁 修正：只保留一次 blink 動畫定義（閃爍效果） */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* 背景閃爍動畫：用於 flash 效果 */
+@keyframes flashEffect {
+  0% { background-color: #ffecec; }
+  50% { background-color: #ffcccc; }
+  100% { background-color: #ffecec; }
+}
+
+/* Logo 旋轉動畫 */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
