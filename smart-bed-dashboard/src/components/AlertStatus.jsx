@@ -9,10 +9,19 @@ function AlertStatus() {
   const [showHistory, setShowHistory] = useState(false);
   const { log, addLog, clearLog } = useAlertLog();
 
-  // 播放警報音效
+  // 🔧《已修改》：新增音效開關與播放控制
+  const ALERT_SOUND_ENABLED = false; // ✅ 改成 true 可啟用音效
+  const alertSoundRef = useRef(new Audio('/alert.mp3')); // ✅ 建立一次音效實例
+  const lastPlayedRef = useRef(0); // ✅ 記錄上次播放時間
+
+  // 🔧《已修改》：播放警報音效（加上開關與節流）
   const playAlertSound = () => {
-    const audio = new Audio('/alert.mp3');
-    audio.play().catch(() => {});
+    if (!ALERT_SOUND_ENABLED) return;
+    const now = Date.now();
+    if (now - lastPlayedRef.current > 3000) {
+      alertSoundRef.current.play().catch(() => {});
+      lastPlayedRef.current = now;
+    }
   };
 
   // 初始模擬資料（可改成 props 傳入或 API 取得）
@@ -27,22 +36,21 @@ function AlertStatus() {
 
   // 每次警報更新時：儲存到 localStorage、播放音效、觸發閃爍動畫
   useEffect(() => {
-  if (evaluatedAlerts?.length > 0) {
-    setAlerts(evaluatedAlerts);
-    evaluatedAlerts.forEach(alert => addLog(alert));
-    playAlertSound();
+    if (evaluatedAlerts?.length > 0) {
+      setAlerts(evaluatedAlerts);
+      evaluatedAlerts.forEach(alert => addLog(alert));
+      playAlertSound(); // 🔧《已修改》：使用改寫後的函式
 
-    // ✅ 防呆：確認 DOM 元素存在且是 HTMLElement
-    if (alertRef?.current instanceof HTMLElement) {
-      alertRef.current.classList.add('flash');
-      setTimeout(() => {
-        if (alertRef.current) {
-          alertRef.current.classList.remove('flash');
-        }
-      }, 1000);
+      if (alertRef?.current instanceof HTMLElement) {
+        alertRef.current.classList.add('flash');
+        setTimeout(() => {
+          if (alertRef.current) {
+            alertRef.current.classList.remove('flash');
+          }
+        }, 1000);
+      }
     }
-  }
-}, [evaluatedAlerts, setAlerts, addLog]);
+  }, [evaluatedAlerts, setAlerts, addLog]);
 
   // 分組警報
   const groupedAlerts = alerts.reduce((acc, alert) => {
