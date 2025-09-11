@@ -1,14 +1,12 @@
-// src/components/Dashboard/HistoryPanel.jsx
-
+// src/components/history/RealTimePanel.jsx
 import React from 'react';
-import AlertHistory from '../AlertHistory/AlertHistory';
+import AlertStatus from './AlertStatus';
 
-function HistoryPanel() {
+export default function RealTimePanel() {
   return (
     <div>
-      <AlertHistory />
+      <h2>即時警報狀態</h2>
+      <AlertStatus />
     </div>
   );
 }
-
-export default HistoryPanel;

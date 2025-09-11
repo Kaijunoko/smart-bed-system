@@ -1,0 +1,18 @@
+{
+  "model_tree": {
+    "type": "DecisionTree",
+    "trained_on": "sleep_simulated.csv",
+    "accuracy": 0.92,
+    "f1_score": 0.89,
+    "created_at": "2025-09-11T12:30:00",
+    "features": ["pressure_mean", "pressure_std", "movement_count", "fft_peak_ratio", "turn_flag"]
+  },
+  "model_svm": {
+    "type": "SVM",
+    "trained_on": "sleep_simulated.csv",
+    "accuracy": 0.88,
+    "f1_score": 0.85,
+    "created_at": "2025-09-11T12:31:00",
+    "features": ["pressure_mean", "pressure_std", "movement_count", "fft_peak_ratio", "turn_flag"]
+  }
+}

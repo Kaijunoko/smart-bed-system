@@ -43,6 +43,24 @@
   animation: blink 1s infinite;
 }
 
+.loader {
+  font-size: 1.2rem;
+  padding: 2rem;
+  text-align: center;
+  color: #555;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  padding: 2rem;
+  text-align: center;
+}
+
+.dashboard section {
+  padding: 1rem 0;
+}
+
 /* 🔁 修正：只保留一次 blink 動畫定義（閃爍效果） */
 @keyframes blink {
   0% { opacity: 1; }

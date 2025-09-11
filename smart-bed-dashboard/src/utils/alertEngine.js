@@ -1,9 +1,9 @@
 /**
  * 根據病床狀態評估警報（含優先與互斥邏輯）
- * @param {Object} params - 包含壓力值、最後翻身時間、離床狀態
+ * @param {Object} params - 可包含 pressure, lastTurnTime, bedExit, last_turn_interval
  * @returns {Array} alerts - 警報陣列，每筆包含 type, message, timestamp, value
  */
-export function evaluateAlerts({ pressure, lastTurnTime, bedExit }) {
+export function evaluateAlerts(params) {
   const now = new Date().toISOString();
   const rawAlerts = [];
 
@@ -21,18 +21,22 @@ export function evaluateAlerts({ pressure, lastTurnTime, bedExit }) {
   };
 
   // 壓力異常：超過 80%
-  if (pressure > 80) {
+  if (typeof params.pressure === 'number' && params.pressure > 80) {
     rawAlerts.push({
       type: 'pressure',
       message: `壓力異常：超過 80%`,
       timestamp: now,
-      value: pressure
+      value: params.pressure
     });
   }
 
-  // 翻身異常：超過 2 小時未翻身
+  // 翻身異常：超過 2 小時未翻身（支援 lastTurnTime 或 last_turn_interval）
   const twoHoursMs = 2 * 60 * 60 * 1000;
-  if (Date.now() - lastTurnTime > twoHoursMs) {
+  const turnIntervalMs = params.last_turn_interval
+    ? params.last_turn_interval * 1000
+    : Date.now() - (params.lastTurnTime || 0);
+
+  if (turnIntervalMs > twoHoursMs) {
     rawAlerts.push({
       type: 'turn',
       message: `翻身異常：超過 2 小時未翻身`,
@@ -42,7 +46,7 @@ export function evaluateAlerts({ pressure, lastTurnTime, bedExit }) {
   }
 
   // 離床異常：bedExit 為 true
-  if (bedExit) {
+  if (params.bedExit === true) {
     rawAlerts.push({
       type: 'exit',
       message: `病患可能離床`,
