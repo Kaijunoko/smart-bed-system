@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+// 🧠 呼叫後端模擬推論 API
 export async function predictSleepStage(input) {
-  const response = await axios.post('http://localhost:8000/api/predict', input);
+  const response = await axios.post('http://localhost:8000/predict_sleep_stage', input);
   return response.data;
 }
 

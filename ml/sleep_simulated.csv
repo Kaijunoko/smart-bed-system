@@ -1,6 +1,0 @@
-pressure_mean,pressure_std,movement_count,fft_peak_ratio,turn_flag,stage
-45.2,12.3,4,0.67,1,deep
-38.1,10.5,2,0.42,0,REM
-50.0,15.0,6,0.81,1,awake
-42.5,11.2,3,0.55,0,deep
-39.8,9.7,1,0.38,0,REM
