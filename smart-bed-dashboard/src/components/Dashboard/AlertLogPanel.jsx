@@ -31,16 +31,21 @@ export default function AlertLogPanel({ alerts }) {
           </thead>
           <tbody>
             {/* 🔁 對每筆警示事件進行渲染 */}
-            {alerts.map((alert, i) => (
-              <tr key={i}>
-                {/* 🕒 從 message 中擷取時間（格式：在 HH:MM） */}
-                <td>{alert.message.match(/在 (\d{2}:\d{2})/)?.[1] || '—'}</td>
-                {/* 🔔 顯示警示類型 */}
-                <td>{alert.type}</td>
-                {/* 📝 顯示完整訊息描述 */}
-                <td>{alert.message}</td>
-              </tr>
-            ))}
+            {alerts.map((alert, i) => {
+              const isBedExit = alert.type === "bed_exit";
+              return (
+                <tr key={i} style={{ backgroundColor: isBedExit ? '#ffe6e6' : 'transparent' }}>
+                  {/* 🕒 從 message 中擷取時間（格式：在 HH:MM） */}
+                  <td>{alert.message.match(/在 (\d{2}:\d{2})/)?.[1] || '—'}</td>
+                  {/* 🔔 顯示警示類型（離床事件加上圖示） */}
+                  <td style={{ color: isBedExit ? '#b30000' : '#333' }}>
+                    {isBedExit ? '🚨 離床警示' : alert.type}
+                  </td>
+                  {/* 📝 顯示完整訊息描述 */}
+                  <td>{alert.message}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

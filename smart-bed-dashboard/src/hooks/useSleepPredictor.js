@@ -20,6 +20,14 @@ async function testPrediction() {
   try {
     const result = await predictSleepStage(mockInput);
     console.log("✅ 推論結果：", result);
+
+    // 🚨 離床警示判斷
+    if (result.bed_exit) {
+      console.warn("🚨 離床警示：使用者可能已離開床面！");
+    } else {
+      console.log("🛏️ 使用者仍在床上，狀態穩定。");
+    }
+
   } catch (error) {
     console.error("❌ 推論失敗：", error.message);
   }

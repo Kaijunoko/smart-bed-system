@@ -24,6 +24,10 @@ class SleepFeatures(BaseModel):
     fft_peak_ratio: float = Field(..., ge=0.0, le=1.0)
     turn_flag: int = Field(..., ge=0, le=1)
 
+# 離床判斷邏輯（可根據實際感測器調整）
+def detect_bed_exit(data: SleepFeatures) -> bool:
+    return data.pressure_mean < 10 and data.movement_count > 3
+
 # 推論 API
 @router.post("/predict_sleep_stage")
 def predict_stage(data: SleepFeatures):
@@ -46,8 +50,12 @@ def predict_stage(data: SleepFeatures):
     except AttributeError:
         confidence = None
 
+    # 離床判斷
+    bed_exit = detect_bed_exit(data)
+
     return {
         "stage": prediction,
         "confidence": round(confidence, 3) if confidence else None,
+        "bed_exit": bed_exit,
         "input": data.dict()
     }
